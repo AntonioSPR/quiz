@@ -1,6 +1,10 @@
 var path = require('path');
 
-// Cargar Modelo OR
+// Postgres DATABASE_URL =postgres://user:password@host:port/database
+// Postgres DATABASE_URL =postgres://fxwlwisdrdfssy:Up929YrwKZQtVZlDYdi0aRjRyy@ec2-54-83-10-210.compute-1.amazonaws.com:5432/d1p554ble1dgpr
+// SQLite   DATABASE_URL =sqlite://:@:/
+
+// Cargar Modelo ORM
 var Sequelize = require('sequelize');
 
 // Usar BBDD SQLite;
