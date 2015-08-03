@@ -1,7 +1,6 @@
 var path = require('path');
 
 // Postgres DATABASE_URL =postgres://user:password@host:port/database
-// Postgres DATABASE_URL =postgres://fxwlwisdrdfssy:Up929YrwKZQtVZlDYdi0aRjRyy@ec2-54-83-10-210.compute-1.amazonaws.com:5432/d1p554ble1dgpr
 // SQLite   DATABASE_URL =sqlite://:@:/
 var url = process.env.DATABASE_URL.match(/(.*)\:\/\/(.*)\:(.*)@(.*)\:(.*)\/(.*)/);
 var DB_name  = (url[6]||null);
@@ -18,7 +17,7 @@ var Sequelize = require('sequelize');
 
 // Usar BBDD SQLite o Postgres
 var sequelize = new Sequelize (DB_name, user, pwd,
-		{	dialect:  dialect,
+		{	dialect:  protocol,
 			protocol: protocol,
 			port:     port,
 			host:     host,
@@ -38,6 +37,15 @@ sequelize.sync().then(function() {
 	// then(...) ejecuta el manejador una vez creada la tabla
 	Quiz.count().then(function (count){
 		if(count === 0) { // La tabla se inicializa sólo si está vacía
+			Quiz.create({ pregunta: 'Capital de Portugal',
+						  respuesta: 'Lisboa'
+						});
+			Quiz.create({ pregunta: 'Capital de España',
+						  respuesta: 'Madrid'
+						});
+			Quiz.create({ pregunta: 'Capital de Francia',
+						  respuesta: 'Paris'
+						});
 			Quiz.create({ pregunta: 'Capital de Italia',
 						  respuesta: 'Roma'
 						})
