@@ -19,16 +19,22 @@ exports.load = function(req, res, next, quizId){
 
 // GET /quizes
 exports.index = function(req, res, next){
-	var buscar = {};
 
-	if (req.query.buscar){
-		buscar = {pregunta: {
-						like "%" + req.query.buscar.replace(' ', '%') + '%'
+	// Si usamos el formulario de búsqueda, quitamos los espacios en blanco y preparamos la búsca
+	var search = {};
+
+	if (req.query.search){
+		search = {pregunta: {
+						like: "%" + req.query.search.replace(' ', '%') + '%'
 				}}
 	};
 
-	
-	models.Quiz.findAll().then(
+	// Si ha habido búsqueda, limitamos findAll a dicha búsqueda
+	var consulta = {
+		where: search
+	};
+
+	models.Quiz.findAll(consulta).then(
 		function(quizes) {
 			res.render('quizes/index.ejs', {quizes: quizes});
 		}
