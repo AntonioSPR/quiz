@@ -29,8 +29,18 @@ var sequelize = new Sequelize (DB_name, user, pwd,
 // Importar la definición de la tabla Quiz en quiz.js
 var Quiz = sequelize.import(path.join(__dirname, 'quiz'));
 
+// Importar la definición de la tabal Comment
+var comment_path = path.join(__dirname, 'comment');
+var Comment = sequelize.import(comment_path);
+
+Comment.belongsTo(Quiz); // Definimos la relación 1 a N
+Quiz.hasMany(Comment);
+
 // Exportar la definición de la tabla Quiz
 exports.Quiz = Quiz;
+
+// Exportar la definición de la tabla Comment
+exports.Comment = Comment;
 
 // squelize.sync() crea e inicializa tabla de preguntas en DB
 sequelize.sync().then(function() {
@@ -80,3 +90,4 @@ sequelize.sync().then(function() {
 		};
 	});
 });
+
