@@ -23,20 +23,36 @@ exports.index = function(req, res, next){
 	// Si usamos el formulario de búsqueda, quitamos los espacios en blanco y preparamos la búsca
 	var search = {};
 
-	if (req.query.search){
-		search = {pregunta: {
-						like: "%" + req.query.search.replace(' ', '%') + '%'
-				}}
+	// Si buscamos por pregunta:
+	if (req.query.pregunta){
+		search = {
+			pregunta: {
+				like: "%" + req.query.pregunta.replace(' ', '%') + '%'
+			}
+		}
 	};
+
+	// Si buscamos por tema:
+	if (req.query.tema){
+		search = {
+			tema: {
+				like: "%" + req.query.tema.replace(' ', '%') + '%'
+			}
+		}
+	};
+
 
 	// Si ha habido búsqueda, limitamos findAll a dicha búsqueda
 	var consulta = {
+		order: [
+			['pregunta', 'ASC']
+		],
 		where: search
 	};
 
 	models.Quiz.findAll(consulta).then(
 		function(quizes) {
-			res.render('quizes/index.ejs', {quizes: quizes, errors:[]});
+			res.render('quizes/index.ejs', {quizes: quizes, tema: req.query.tema, errors:[]});
 		}
 	).catch(function(error) {next(error);})
 };
@@ -59,6 +75,7 @@ exports.edit = function(req, res) {
 exports.update = function(req, res) {
 	req.quiz.pregunta = req.body.quiz.pregunta;
 	req.quiz.respuesta = req.body.quiz.respuesta;
+	req.quiz.tema = req.body.quiz.tema;
 
 	req.quiz
 		.validate()
@@ -68,8 +85,8 @@ exports.update = function(req, res) {
 						res.render('quizes/edit', {quiz: req.quiz, errors: err.errors});
 					}
 					else {
-						req.quiz    // save: guarda campos pregunta y respuesta en DB
-							.save( {fields: ["pregunta", "respuesta"]})
+						req.quiz    // save: guarda campos pregunta, respuesta  y tema en DB
+							.save( {fields: ["pregunta", "respuesta", "tema"]})
 								.then( function(){ res.redirect('/quizes');});
 					}
 				}
@@ -98,7 +115,7 @@ exports.answer = function(req, res) {
 // GET /quizes/new
 exports.new = function(req, res) {
 	var quiz = models.Quiz.build( // crea objeto quiz
-		{pregunta: "Pregunta", respuesta: "Respuesta"}
+		{pregunta: "Pregunta", respuesta: "Respuesta", tema:"tema"}
 	);
 
 	res.render('quizes/new', {quiz: quiz, errors:[]});
@@ -119,7 +136,7 @@ exports.create = function(req, res) {
 					else {
 						// guarda en BD los camos pregunta y respuesta de quiz
 						quiz
-							.save({fields: ["pregunta", "respuesta"]})
+							.save({fields: ["pregunta", "respuesta", "tema"]})
 								.then(function(){
 										res.redirect('/quizes');
 								}
@@ -131,5 +148,5 @@ exports.create = function(req, res) {
 
 // GET /author
 exports.author = function(req, res) {
-	res.render('author', {});	
+	res.render('author', {quiz: res.quiz, errors: []});	
 };

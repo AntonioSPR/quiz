@@ -36,20 +36,47 @@ exports.Quiz = Quiz;
 sequelize.sync().then(function() {
 	// then(...) ejecuta el manejador una vez creada la tabla
 	Quiz.count().then(function (count){
-		if(count === 0) { // La tabla se inicializa sólo si está vacía
-			Quiz.create({ pregunta: 'Capital de Portugal',
-						  respuesta: 'Lisboa'
+		if(count < 10) { // La tabla se inicializa sólo si está vacía
+			Quiz.create({ pregunta:  'Capital de Francia',
+						  respuesta: 'Paris',
+						  tema:      'Geografía'
 						});
-			Quiz.create({ pregunta: 'Capital de España',
-						  respuesta: 'Madrid'
+			Quiz.create({ pregunta:  'Capital de Italia',
+						  respuesta: 'Roma',
+						  tema:      'Geografía'
 						});
-			Quiz.create({ pregunta: 'Capital de Francia',
-						  respuesta: 'Paris'
+			Quiz.create({ pregunta:  'Las ranas y los sapos son:',
+						  respuesta: 'Anfibios',
+						  tema:      'Ciencia'
 						});
-			Quiz.create({ pregunta: 'Capital de Italia',
-						  respuesta: 'Roma'
-						})
-			.then(function(){console.log('Base de datos inicializada')});
+			Quiz.create({ pregunta:  'Las serpientes y las tortugas son:',
+						  respuesta: 'Reptiles',
+						  tema:      'Ciencia'
+						});
+			Quiz.create({ pregunta:  'El Quijote lo escribío (sólo apellido)',
+						  respuesta: 'Cervantes',
+						  tema:      'Humanidades'
+						});
+			Quiz.create({ pregunta:  'Las Meninas las pintó (sólo apellido)',
+						  respuesta: 'Velázquez',
+						  tema:      'Humanidades'
+						});
+			Quiz.create({ pregunta:  '¿Cuantas emociones tiene el personal de Pixar?',
+						  respuesta: '5',
+						  tema:      'Ocio'
+						});
+			Quiz.create({ pregunta:  '¿Cuantos ojos tiene Mike Sully?',
+						  respuesta: '1',
+						  tema:      'Ocio'
+						});
+			Quiz.create({ pregunta:  '¿Qué fruta es el logo de Apple?',
+						  respuesta: 'Manzana',
+						  tema:      'Tecnología'
+						});
+			Quiz.create({ pregunta:  '¿Qué animal es Tux?',
+						  respuesta: 'Pingüino',
+						  tema:      'Tecnología'
+						}).then(function(){console.log('Base de datos inicializada')});
 		};
 	});
 });

@@ -6,7 +6,8 @@ body                 { font: 16px Georgia, serif;}
 	                   margin-bottom: 1px; color: black;}
 
 section > div        { padding: 20px; }
-header, nav, section { background: #FAA; text-align: center;}
+header, nav          { background: #FAA; text-align: center;}
+section              { background: #FAA; text-align: left;}
 footer               { background: #eee; text-align: center;}
 footer a             { margin: 0px 10px 0px 0px;}
 nav span             { margin: 0px 10px 0px 0px;}
