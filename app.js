@@ -41,6 +41,30 @@ app.use(function(req, res, next) {
   next();
 });
 
+//Ejercicio Mod9: Tiempo de sesión
+app.use (function (req, res, next) {
+  var fecha = new Date();
+  var timenow = fecha.getTime();
+  if (req.session.user) {
+    if (!req.session.time) {
+      req.session.time = timenow;
+      next();
+    } else {
+      if ((timenow - req.session.time) > 10000) { 
+      //tiempo máximo 10 segundos
+        delete req.session.user;
+        delete req.session.time;
+        next();
+      } else {
+        req.session.time = timenow;
+        next();
+      }
+    }
+  }else{
+    next();
+  }
+});
+
 app.use('/', routes);
 
 // catch 404 and forward to error handler
@@ -75,6 +99,5 @@ app.use(function(err, req, res, next) {
     errors:[]
   });
 });
-
 
 module.exports = app;
